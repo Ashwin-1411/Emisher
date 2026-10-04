@@ -2,7 +2,7 @@ Authentication-Results: mx.example.org; spf=pass
  smtp.mailfrom=service@random-mailer.xyz; dkim=none; dmarc=pass
  header.from=random-mailer.xyz
 Received: from smtp.random-mailer.xyz (smtp.random-mailer.xyz [45.33.32.156])
- by mx.example.org with ESMTPS id 4TfX8496; Wed, 06 Mar 2024 08:30:10 +0000
+ by mx.example.org with ESMTPS id 4TfX3726; Wed, 06 Mar 2024 08:30:10 +0000
 Return-Path: <service@random-mailer.xyz>
 From: "PayPal Support" <service@random-mailer.xyz>
 To: student@example.org

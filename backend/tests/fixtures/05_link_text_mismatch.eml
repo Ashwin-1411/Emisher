@@ -2,7 +2,7 @@ Authentication-Results: mx.example.org; spf=pass
  smtp.mailfrom=news@example.net; dkim=pass header.d=example.net; dmarc=pass
  header.from=example.net
 Received: from mail.example.net (mail.example.net [151.101.1.69]) by
- mx.example.org with ESMTPS id 4TfX9015; Fri, 08 Mar 2024 09:00:10 +0000
+ mx.example.org with ESMTPS id 4TfX291; Fri, 08 Mar 2024 09:00:10 +0000
 From: Example News <news@example.net>
 To: student@example.org
 Subject: Please verify your sign-in
@@ -10,15 +10,15 @@ Date: Fri, 08 Mar 2024 09:00:00 +0000
 Message-ID: <d4@example.net>
 MIME-Version: 1.0
 Content-Type: multipart/alternative;
- boundary="===============5661959017615250084=="
+ boundary="===============0876114217208468600=="
 
---===============5661959017615250084==
+--===============0876114217208468600==
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
 Verify your sign-in: https://www.example.com/account
 
---===============5661959017615250084==
+--===============0876114217208468600==
 Content-Type: text/html; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
@@ -26,4 +26,4 @@ MIME-Version: 1.0
 <p>Please <a href=3D"http://login-verify.example.net/session?u=3D1">https://w=
 ww.example.com/account</a> to verify your password.</p>
 
---===============5661959017615250084==--
+--===============0876114217208468600==--

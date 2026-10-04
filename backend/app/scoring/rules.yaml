@@ -1,0 +1,243 @@
+# Scoring rules. Edit weights here; no code changes needed.
+#
+# A rule fires when an analysis module emits a Signal with the same id. The risk score is the
+# sum of the weights of the fired rules (each rule counts once, however many times it
+# triggered), capped at 100. `explanation` is shown to non-technical users: it is a Python
+# format string filled from the signal's context. See docs/scoring-rules.md for the rationale.
+
+thresholds:
+  suspicious: 25   # score >= this  -> SUSPICIOUS
+  phishing: 60     # score >= this  -> PHISHING
+
+rules:
+  # ------------------------------------------------------------------ authentication
+  - id: dmarc_fail
+    category: authentication
+    weight: 40
+    description: DMARC evaluation failed for the From domain
+    explanation: "The email claims to come from {domain}, but {domain}'s own security policy says it was not authorised to send it (DMARC failed)."
+  - id: spf_fail
+    category: authentication
+    weight: 15
+    description: SPF check failed (sending server not authorised by the envelope domain)
+    explanation: "The server that sent this email is not on the approved sender list for its domain (SPF failed)."
+  - id: spf_softfail
+    category: authentication
+    weight: 8
+    description: SPF softfail (sending server probably not authorised)
+    explanation: "The sending server is probably not on the approved list for its domain (SPF soft-fail)."
+  - id: dkim_fail
+    category: authentication
+    weight: 15
+    description: A DKIM signature was present but did not verify
+    explanation: "The email's digital signature is invalid, so it may have been altered or forged (DKIM failed)."
+  - id: spf_misaligned
+    category: authentication
+    weight: 10
+    description: SPF passed for a domain different from the visible From domain
+    explanation: "The email was sent on behalf of {spf_domain}, not {domain}, which is the address you see. Scammers use this to look legitimate."
+  - id: auth_results_untrusted
+    category: authentication
+    weight: 8
+    description: Authentication-Results header was not written by the receiving server
+    explanation: "The email contains security-check results that were not added by your mail provider, so they cannot be trusted."
+  - id: auth_results_missing
+    category: authentication
+    weight: 5
+    description: No Authentication-Results header present
+    explanation: "Your mail provider recorded no sender-verification results for this email."
+
+  # ------------------------------------------------------------------ routing (Received chain)
+  - id: hop_forged_suspected
+    category: routing
+    weight: 20
+    description: Received hops below the trusted boundary look fabricated
+    explanation: "The email's delivery history contains entries that look fake, a trick used to hide where it really came from."
+  - id: hop_timestamp_out_of_order
+    category: routing
+    weight: 8
+    description: Received timestamps go backwards in time
+    explanation: "The email's delivery log has timestamps that are impossible (an earlier step happening after a later one)."
+  - id: hop_private_ip_unexpected
+    category: routing
+    weight: 5
+    description: A private IP appears after the message already crossed the Internet
+    explanation: "The delivery history shows an internal-network address in an odd place, which can indicate tampering."
+  - id: hop_large_delay
+    category: routing
+    weight: 3
+    description: Unusually long delay between two hops
+    explanation: "The email spent {minutes} minutes between two servers, which is unusual."
+
+  # ------------------------------------------------------------------ sender identity
+  - id: display_name_brand_spoof
+    category: sender
+    weight: 35
+    description: Display name contains a known brand but the address is on an unrelated domain
+    explanation: "The sender's name says \"{display_name}\" (a name you may trust), but the address is actually at {domain}."
+  - id: display_name_domain_mismatch
+    category: sender
+    weight: 30
+    description: Display name contains a different email address or domain than the real sender
+    explanation: "The sender's name shows {shown}, but the email really comes from {domain}."
+  - id: reply_to_mismatch
+    category: sender
+    weight: 15
+    description: Reply-To domain differs from the From domain
+    explanation: "If you reply, your answer goes to {reply_domain}, not to {domain} where the email claims to come from."
+  - id: return_path_mismatch
+    category: sender
+    weight: 5
+    description: Return-Path (envelope sender) domain differs from the From domain
+    explanation: "The behind-the-scenes sender address ({return_domain}) differs from the visible one ({domain})."
+  - id: lookalike_domain
+    category: sender
+    weight: 45
+    description: Sender domain imitates a well-known brand (homoglyphs, typos or lookalike characters)
+    explanation: "The sender's domain {domain} is made to look like {brand}, but it is not {brand}."
+  - id: punycode_domain
+    category: sender
+    weight: 10
+    description: Domain uses internationalised (punycode) characters
+    explanation: "The domain {domain} uses special characters that can imitate ordinary letters."
+  - id: brand_keyword_domain
+    category: sender
+    weight: 15
+    description: Domain contains a brand name but is not the brand's domain
+    explanation: "The domain {domain} contains the name {brand} but does not belong to {brand}."
+  - id: young_domain_sender
+    category: sender
+    weight: 25
+    description: Sender domain registered less than 30 days ago
+    explanation: "The sender's domain {domain} was registered only {days} days ago. Scam domains are usually brand new."
+
+  # ------------------------------------------------------------------ links
+  - id: link_text_mismatch
+    category: links
+    weight: 30
+    description: A link's visible text shows one site but points to another
+    explanation: "A link in the email says it goes to {shown} but really leads to {actual}."
+  - id: lookalike_link_domain
+    category: links
+    weight: 30
+    description: A link points to a domain imitating a well-known brand
+    explanation: "A link goes to {domain}, which is designed to look like {brand}."
+  - id: young_domain_link
+    category: links
+    weight: 20
+    description: A linked domain was registered less than 30 days ago
+    explanation: "A link goes to {domain}, a website registered only {days} days ago."
+  - id: url_ip_host
+    category: links
+    weight: 15
+    description: A link uses a raw IP address instead of a domain name
+    explanation: "A link goes to a bare number address instead of a normal website name, which legitimate companies rarely do."
+  - id: url_userinfo
+    category: links
+    weight: 20
+    description: A link contains user@ credentials syntax that disguises the real host
+    explanation: "A link uses a trick (a fake name before an @ sign) to disguise where it really goes."
+  - id: url_shortener
+    category: links
+    weight: 8
+    description: A link uses a URL shortener that hides the destination
+    explanation: "A link uses a shortening service, which hides where it really leads."
+  - id: url_redirector_wrapped
+    category: links
+    weight: 2
+    description: A link was wrapped by a redirector (SafeLinks, Google, etc.)
+    explanation: "Some links pass through a security or tracking service before reaching their destination."
+
+  # ------------------------------------------------------------------ attachments
+  - id: attachment_double_extension
+    category: attachments
+    weight: 45
+    description: Attachment has a document extension followed by an executable one (invoice.pdf.exe)
+    explanation: "The attachment \"{filename}\" is disguised: it looks like a document but is really a program."
+  - id: attachment_executable
+    category: attachments
+    weight: 40
+    description: Attachment is an executable or script
+    explanation: "The attachment \"{filename}\" is a program or script that could run harmful code if opened."
+  - id: attachment_type_mismatch
+    category: attachments
+    weight: 25
+    description: File content does not match its extension
+    explanation: "The attachment \"{filename}\" is not the kind of file its name claims (it is actually: {detected})."
+  - id: attachment_macro
+    category: attachments
+    weight: 30
+    description: Office document contains VBA macros
+    explanation: "The attachment \"{filename}\" contains macros, small programs that malware often hides in Office files."
+  - id: attachment_macro_autoexec
+    category: attachments
+    weight: 20
+    description: Macro runs automatically on open (AutoOpen, Document_Open, ...)
+    explanation: "The macro in \"{filename}\" is set to run automatically as soon as the file is opened ({autoexec})."
+  - id: attachment_password_protected
+    category: attachments
+    weight: 20
+    description: Archive or document is password-protected, which prevents scanning
+    explanation: "The attachment \"{filename}\" is password-protected, a common way to slip past virus scanners."
+  - id: attachment_html
+    category: attachments
+    weight: 10
+    description: HTML file attached (used for fake login pages and HTML smuggling)
+    explanation: "The email attaches a web page (\"{filename}\"), which is sometimes used to show a fake login form."
+  - id: attachment_rtlo
+    category: attachments
+    weight: 40
+    description: Filename contains a right-to-left override character that reverses the displayed extension
+    explanation: "The attachment's name contains a hidden character that makes a dangerous file look harmless."
+
+  # ------------------------------------------------------------------ language (weak signal)
+  - id: urgency_language
+    category: language
+    weight: 6
+    description: Urgency / threat wording (weak signal)
+    explanation: "The wording pressures you to act quickly (\"{example}\"), a common scam tactic."
+  - id: credential_request_language
+    category: language
+    weight: 8
+    description: Asks for credentials or sensitive data (weak signal)
+    explanation: "The email asks you to confirm or enter personal or login details (\"{example}\")."
+
+  # ------------------------------------------------------------------ parsing
+  - id: mime_malformed
+    category: structure
+    weight: 5
+    description: Message structure is malformed
+    explanation: "The email is built in an unusual, broken way, which some scammers use to evade filters."
+
+  # ------------------------------------------------------------------ enrichment
+  - id: vt_url_malicious
+    category: reputation
+    weight: 40
+    description: VirusTotal engines flag a linked URL as malicious
+    explanation: "{engines} security vendors flag a link in this email ({url}) as malicious."
+  - id: vt_url_suspicious
+    category: reputation
+    weight: 15
+    description: VirusTotal engines flag a linked URL as suspicious
+    explanation: "Some security vendors consider a link in this email ({url}) suspicious."
+  - id: vt_file_malicious
+    category: reputation
+    weight: 60
+    description: VirusTotal engines flag an attachment hash as malicious
+    explanation: "Security vendors identify the attachment \"{filename}\" as malware ({engines} detections)."
+  - id: urlscan_malicious
+    category: reputation
+    weight: 35
+    description: urlscan.io verdict is malicious for a linked page
+    explanation: "A live scan of a link in this email ({url}) judged the page to be malicious."
+
+# Hard overrides: when all `requires_all` rules have fired, the verdict is forced regardless of score.
+overrides:
+  - id: known_malware_hash
+    requires_all: [vt_file_malicious]
+    verdict: PHISHING
+    explanation: "An attachment matches known malware."
+  - id: dmarc_fail_with_lookalike
+    requires_all: [dmarc_fail, lookalike_domain]
+    verdict: PHISHING
+    explanation: "The email fails sender verification AND uses a lookalike of a trusted brand."

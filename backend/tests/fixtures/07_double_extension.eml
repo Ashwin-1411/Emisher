@@ -2,22 +2,22 @@ Authentication-Results: mx.example.org; spf=pass
  smtp.mailfrom=sales@example.net; dkim=none; dmarc=none
  header.from=example.net
 Received: from mail.example.net (mail.example.net [151.101.1.69]) by
- mx.example.org with ESMTPS id 4TfX3666; Tue, 12 Mar 2024 07:00:10 +0000
+ mx.example.org with ESMTPS id 4TfX6595; Tue, 12 Mar 2024 07:00:10 +0000
 From: Sales <sales@example.net>
 To: student@example.org
 Subject: Invoice attached
 Date: Tue, 12 Mar 2024 07:00:00 +0000
 Message-ID: <f6@example.net>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3984237049213523428=="
+Content-Type: multipart/mixed; boundary="===============1398939630144034831=="
 
---===============3984237049213523428==
+--===============1398939630144034831==
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
 Please find the invoice attached.
 
---===============3984237049213523428==
+--===============1398939630144034831==
 Content-Type: application/octet-stream
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="invoice.pdf.exe"
@@ -26,4 +26,4 @@ MIME-Version: 1.0
 TVoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAA==
 
---===============3984237049213523428==--
+--===============1398939630144034831==--

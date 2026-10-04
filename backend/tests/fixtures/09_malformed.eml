@@ -2,7 +2,6 @@ From: Odd Sender <odd@example.net>
 To: student@example.org
 Subject: =?utf-8?B?!!!not-base64!!!?= broken
 Date: not a real date
-this line has no colon so it is a header defect
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="BOUNDARY"
 

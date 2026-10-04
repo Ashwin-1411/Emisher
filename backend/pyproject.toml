@@ -55,9 +55,8 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/fixtures/*" = ["E501"]
+# Long f-strings/messages are fine; the formatter handles code layout.
+ignore = ["E501"]
 
 [tool.mypy]
 python_version = "3.11"

@@ -1,0 +1,36 @@
+{
+  "01_legit.eml": {"verdict": "SAFE", "rules": [], "exact_rules": true},
+  "02_display_name_spoof.eml": {
+    "verdict": "SUSPICIOUS",
+    "rules": ["display_name_brand_spoof", "urgency_language", "credential_request_language"]
+  },
+  "03_lookalike_punycode.eml": {
+    "verdict": "PHISHING",
+    "rules": ["lookalike_domain", "punycode_domain", "lookalike_link_domain"]
+  },
+  "04_dmarc_alignment_fail.eml": {
+    "verdict": "SUSPICIOUS",
+    "rules": ["dmarc_fail", "spf_misaligned", "return_path_mismatch"]
+  },
+  "05_link_text_mismatch.eml": {
+    "verdict": "SUSPICIOUS",
+    "rules": ["link_text_mismatch", "credential_request_language"]
+  },
+  "06_safelinks.eml": {
+    "verdict": "SUSPICIOUS",
+    "rules": ["link_text_mismatch", "url_redirector_wrapped"]
+  },
+  "07_double_extension.eml": {
+    "verdict": "PHISHING",
+    "rules": ["attachment_double_extension", "attachment_executable"]
+  },
+  "08_macro_doc.eml": {
+    "verdict": "SUSPICIOUS",
+    "rules": ["attachment_macro", "attachment_macro_autoexec"]
+  },
+  "09_malformed.eml": {"verdict": "SAFE", "rules": ["mime_malformed", "auth_results_missing"]},
+  "10_forged_received.eml": {
+    "verdict": "SUSPICIOUS",
+    "rules": ["hop_forged_suspected", "hop_timestamp_out_of_order"]
+  }
+}

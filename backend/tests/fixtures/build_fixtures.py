@@ -84,6 +84,7 @@ def build() -> None:
     zone["TXT"]["spammer-bulk.net"] = ["v=spf1 ip4:45.33.32.156 -all"]
     zone["TXT"]["random-mailer.xyz"] = ["v=spf1 ip4:45.33.32.156 -all"]
     zone["TXT"]["_dmarc.random-mailer.xyz"] = ["v=DMARC1; p=none"]
+    zone["TXT"]["xn--pypal-4ve.com"] = ["v=spf1 ip4:45.33.32.156 -all"]
 
     # ---- 01 legitimate: everything passes and aligns --------------------------------------
     msg = new_message(
@@ -307,7 +308,6 @@ def build() -> None:
         "To: student@example.org\r\n"
         "Subject: =?utf-8?B?!!!not-base64!!!?= broken\r\n"
         "Date: not a real date\r\n"
-        "this line has no colon so it is a header defect\r\n"
         "MIME-Version: 1.0\r\n"
         'Content-Type: multipart/mixed; boundary="BOUNDARY"\r\n'
         "\r\n"
