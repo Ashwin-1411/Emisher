@@ -23,7 +23,9 @@ def _split_csv(value: object) -> list[str]:
 class Settings(BaseSettings):
     """Typed view over the environment. One instance is shared via :func:`get_settings`."""
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf-8", extra="ignore", env_ignore_empty=True
+    )
 
     # --- general -----------------------------------------------------------------------
     app_env: str = "dev"
