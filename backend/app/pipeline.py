@@ -96,7 +96,7 @@ async def analyze_email(raw: bytes, services: Services, enrich: bool = True) -> 
         signals.extend(sigs)
         return findings
 
-    urls = await _stage("urls", warnings, [], _urls)
+    urls: list[UrlFinding] = await _stage("urls", warnings, [], _urls)
 
     async def _attachments() -> list[AttachmentFinding]:
         # olevba is CPU-bound and synchronous: keep it off the event loop.
@@ -104,7 +104,7 @@ async def analyze_email(raw: bytes, services: Services, enrich: bool = True) -> 
         signals.extend(sigs)
         return findings
 
-    attachments = await _stage("attachments", warnings, [], _attachments)
+    attachments: list[AttachmentFinding] = await _stage("attachments", warnings, [], _attachments)
 
     async def _heuristics() -> HeuristicsReport:
         report, sigs = analyze_heuristics(email, urls)

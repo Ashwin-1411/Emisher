@@ -7,6 +7,7 @@ to maintain the IANA bootstrap file ourselves.
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from datetime import UTC, datetime
 
@@ -57,14 +58,13 @@ class RdapClient:
         )
 
     async def _fetch(self, domain: str) -> datetime | None:
-        kwargs = {"sleep": self._sleep} if self._sleep else {}
         resp = await request_with_retry(
             self.client,
             "GET",
             f"{self.base_url}/domain/{domain}",
             headers={"accept": "application/rdap+json"},
             follow_redirects=True,
-            **kwargs,
+            sleep=self._sleep or asyncio.sleep,
         )
         if resp.status_code != 200:
             return None

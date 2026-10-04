@@ -6,6 +6,7 @@ and a daily counter, and results are cached by hash so the same indicator is nev
 
 from __future__ import annotations
 
+import asyncio
 import base64
 import hashlib
 import logging
@@ -60,9 +61,12 @@ class VirusTotalClient:
             raise VtUnavailable("VirusTotal daily quota used up")
         if not await self.bucket.acquire(self.max_wait):
             raise VtUnavailable("VirusTotal rate limit: lookup skipped to keep the analysis fast")
-        kwargs = {"sleep": self._sleep} if self._sleep else {}
         return await request_with_retry(
-            self.client, "GET", f"{BASE}{path}", headers=self._headers, **kwargs
+            self.client,
+            "GET",
+            f"{BASE}{path}",
+            headers=self._headers,
+            sleep=self._sleep or asyncio.sleep,
         )
 
     @staticmethod

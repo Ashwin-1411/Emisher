@@ -12,6 +12,7 @@ from email import policy
 from email.message import Message
 from email.parser import BytesParser
 from email.utils import getaddresses, parseaddr, parsedate_to_datetime
+from typing import Any
 
 from app.models import Address, AttachmentData, Header, MimeNode, ParsedEmail
 from app.netutil import to_ascii_host
@@ -105,7 +106,7 @@ class _WalkState:
         self._text: list[str] = []
         self._html: list[str] = []
 
-    def walk(self, part: Message, nested_in: str | None, depth: int) -> MimeNode:
+    def walk(self, part: Any, nested_in: str | None, depth: int) -> MimeNode:
         ctype = part.get_content_type()
         node = MimeNode(content_type=ctype)
         self.defects.extend(type(d).__name__ for d in part.defects)
@@ -130,7 +131,7 @@ class _WalkState:
         return node
 
     def _walk_embedded_message(
-        self, part: Message, node: MimeNode, nested_in: str | None, depth: int
+        self, part: Any, node: MimeNode, nested_in: str | None, depth: int
     ) -> None:
         """A forwarded-as-attachment email. Kept as an attachment, and its own attachments are
         surfaced too (flagged ``nested_in``) because malware is often hidden one level down."""
