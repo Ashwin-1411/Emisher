@@ -9,6 +9,7 @@ from helpers import StaticResolver
 
 from app.cache import MemoryCache
 from app.config import Settings
+from app.enrichment import Enricher
 from app.main import create_app
 from app.scoring import load_rules
 from app.services import Services
@@ -18,6 +19,10 @@ TOKEN = "test-token"
 
 def _no_network(request: httpx.Request) -> httpx.Response:
     raise AssertionError(f"Unexpected network call to {request.url}")
+
+
+async def _instant_sleep(_seconds: float) -> None:
+    """Tests must not actually wait for backoff or polling intervals."""
 
 
 def make_settings(**overrides) -> Settings:
@@ -32,11 +37,13 @@ def make_services(settings: Settings | None = None, handler=_no_network, resolve
 
     settings = settings or make_settings()
     http = httpx.AsyncClient(transport=httpx.MockTransport(handler))
+    cache = MemoryCache()
     return Services(
         settings=settings,
         resolver=resolver or StaticResolver(),
         http=http,
-        cache=MemoryCache(),
+        cache=cache,
+        enricher=Enricher(settings, http, cache, sleep=_instant_sleep),
         ruleset=load_rules(
             settings.scoring_rules_path,
             settings.score_suspicious_threshold,

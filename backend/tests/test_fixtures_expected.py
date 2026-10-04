@@ -3,7 +3,7 @@
 import json
 
 import pytest
-from conftest import make_services
+from conftest import make_services, make_settings
 from helpers import FIXTURES, load_fixture
 
 from app.pipeline import analyze_email
@@ -15,7 +15,9 @@ EXPECTED = json.loads((FIXTURES / "expected.json").read_text())
 @pytest.mark.parametrize("enrich", [False, True])
 async def test_fixture_verdict(name: str, enrich: bool) -> None:
     expected = EXPECTED[name]
-    report = await analyze_email(load_fixture(name), make_services(), enrich=enrich)
+    report = await analyze_email(
+        load_fixture(name), make_services(make_settings(rdap_enabled=False)), enrich=enrich
+    )
     fired = {r.rule_id for r in report.fired_rules}
 
     assert report.verdict.value == expected["verdict"], (report.score, sorted(fired))

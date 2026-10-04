@@ -15,6 +15,7 @@ from app.api.store import ReportStore
 from app.auth_checks.resolver import DnsResolver, SystemResolver
 from app.cache import Cache, build_cache
 from app.config import Settings
+from app.enrichment import Enricher
 from app.scoring import RuleSet, load_rules
 
 
@@ -25,6 +26,7 @@ class Services:
     http: httpx.AsyncClient
     cache: Cache
     ruleset: RuleSet
+    enricher: Enricher
     reports: ReportStore = field(default_factory=ReportStore)
     limiter: RateLimiter = field(default_factory=RateLimiter)
 
@@ -46,6 +48,7 @@ def build_services(settings: Settings) -> Services:
             settings.score_suspicious_threshold,
             settings.score_phishing_threshold,
         ),
+        enricher=Enricher(settings, http, cache),
         reports=ReportStore(settings.report_ttl_seconds, settings.report_store_max),
         limiter=RateLimiter(settings.rate_limit_per_minute),
     )

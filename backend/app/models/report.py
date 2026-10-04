@@ -190,6 +190,7 @@ class UrlscanResult(BaseModel):
     final_url: str = ""  # defanged
     screenshot_url: str = ""
     result_url: str = ""
+    detail: str = ""  # why a scan failed, when urlscan says
     cached: bool = False
 
 

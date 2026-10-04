@@ -19,7 +19,8 @@ from typing import TypeVar
 
 from app.attachments import analyze_attachments
 from app.auth_checks import check_auth
-from app.heuristics import analyze_heuristics
+from app.enrichment.asn import annotate_hops
+from app.heuristics import analyze_heuristics, domain_age_signals
 from app.hops import trace_hops
 from app.ioc import build_iocs
 from app.models import (
@@ -34,6 +35,7 @@ from app.models import (
     Signal,
     UrlFinding,
 )
+from app.netutil import registered_domain
 from app.parsing import parse_email
 from app.scoring import evaluate
 from app.services import Services
@@ -111,7 +113,20 @@ async def analyze_email(raw: bytes, services: Services, enrich: bool = True) -> 
 
     heuristics = await _stage("heuristics", warnings, HeuristicsReport(), _heuristics)
 
-    enrichment = EnrichmentReport(enabled=False)
+    async def _enrich() -> EnrichmentReport:
+        if not enrich:
+            return EnrichmentReport(enabled=False, sources={"all": "skipped: enrich=false"})
+        sender = registered_domain(email.from_.domain) if email.from_ else ""
+        lookalikes = {registered_domain(d["domain"]) for d in heuristics.lookalikes}
+        res = await services.enricher.enrich(sender, urls, attachments, lookalikes)
+        signals.extend(res.signals)
+        heuristics.domain_ages = res.domain_ages
+        signals.extend(domain_age_signals(res.domain_ages, sender, {u.domain for u in urls}))
+        if settings.hop_asn_lookup_enabled:
+            await asyncio.to_thread(annotate_hops, hops, services.resolver)
+        return res.report
+
+    enrichment = await _stage("enrichment", warnings, EnrichmentReport(enabled=False), _enrich)
     if any("MIME defect" in w for w in email.parse_warnings):
         signals.append(Signal(rule_id="mime_malformed", detail="; ".join(email.parse_warnings[:3])))
 

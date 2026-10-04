@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 import secrets
 
 from fastapi import HTTPException, Request
@@ -78,10 +79,10 @@ def extract_form_file(content_type: str, body: bytes, field: str = "file") -> by
         return None
     boundary = content_type.split(marker, 1)[1].split(";")[0].strip().strip('"').encode()
     delimiter = b"--" + boundary
-    wanted = b'name="' + field.encode() + b'"'
+    wanted = re.compile(rb'(?<![a-z])name="' + re.escape(field.encode()) + rb'"')
     for part in body.split(delimiter):
         head, sep, payload = part.partition(b"\r\n\r\n")
-        if sep and wanted in head.lower():
+        if sep and wanted.search(head.lower()):
             return payload[:-2] if payload.endswith(b"\r\n") else payload
     return None
 
