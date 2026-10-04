@@ -1,0 +1,61 @@
+Authentication-Results: mx.example.org; spf=pass smtp.mailfrom=pm@example.com;
+ dkim=pass header.d=example.com; dmarc=pass header.from=example.com
+Received: from mail.example.com (mail.example.com [93.184.216.34]) by
+ mx.example.org with ESMTPS id 4TfX7528; Wed, 13 Mar 2024 15:00:10 +0000
+From: Project Office <pm@example.com>
+To: student@example.org
+Subject: Meeting notes
+Date: Wed, 13 Mar 2024 15:00:00 +0000
+Message-ID: <g7@example.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============8366095759123268470=="
+
+--===============8366095759123268470==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+Notes from today's meeting are attached.
+
+--===============8366095759123268470==
+Content-Type: application/vnd.ms-word.document.macroEnabled.12
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="meeting-notes.docm"
+MIME-Version: 1.0
+
+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
+
+--===============8366095759123268470==--

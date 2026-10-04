@@ -1,0 +1,24 @@
+{
+  "TXT": {
+    "test._domainkey.example.com": [
+      "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAofchbl69WQWNFHmoMraTJ/F0CrLBo3g543qYc3dz4WHXP6VKjQsUrLuANOEygP0MFk+x7ivJLYOdlXUC0RhtPZB+Ef5iyUPkpyT1LPp0wttd5e8XP22Nbfw9K1//7Hc6ak/vyMrIWwFb/7vejL74qq3EY/IUdDXIilQZZWJZkOq6Ge7HUJpbZ7A4VJNmoQGs5lEN2U6Zh+znZLK53qsFxzdZK7gI+PP4E0OcLtDVUlq2B1+6orFQJV3jjF7Dxnl2Y3wdhjL/7HQrI8ORPV9eT4/+OdPNeBOkEYYlX0YmF3lafk4yWHsjY8x75KmZzIoGAD0OWli5chxwoM/2ATJMBQIDAQAB"
+    ],
+    "example.com": [
+      "v=spf1 ip4:93.184.216.34 -all"
+    ],
+    "_dmarc.example.com": [
+      "v=DMARC1; p=reject; rua=mailto:dmarc@example.com"
+    ],
+    "spammer-bulk.net": [
+      "v=spf1 ip4:45.33.32.156 -all"
+    ],
+    "random-mailer.xyz": [
+      "v=spf1 ip4:45.33.32.156 -all"
+    ],
+    "_dmarc.random-mailer.xyz": [
+      "v=DMARC1; p=none"
+    ]
+  },
+  "A": {},
+  "MX": {}
+}

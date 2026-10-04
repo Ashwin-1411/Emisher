@@ -1,0 +1,16 @@
+Authentication-Results: mx.example.org; spf=pass
+ smtp.mailfrom=bounce@spammer-bulk.net; dkim=none; dmarc=fail
+ header.from=example.com
+Received: from bulk1.spammer-bulk.net (bulk1.spammer-bulk.net [45.33.32.156])
+ by mx.example.org with ESMTPS id 4TfX5691; Thu, 07 Mar 2024 14:00:10 +0000
+Return-Path: <bounce@spammer-bulk.net>
+From: Example Billing <billing@example.com>
+To: student@example.org
+Subject: Invoice overdue
+Date: Thu, 07 Mar 2024 14:00:00 +0000
+Message-ID: <c3@spammer-bulk.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Your invoice is overdue. See your account at https://www.example.com/pay

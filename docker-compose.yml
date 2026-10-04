@@ -1,0 +1,14 @@
+services:
+  backend:
+    build: ./backend
+    env_file: .env
+    environment:
+      CACHE_PATH: /srv/data/cache.sqlite3
+    ports:
+      # Bound to localhost only: the backend holds API keys and should not be exposed by accident.
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - cache-data:/srv/data
+
+volumes:
+  cache-data:

@@ -1,0 +1,34 @@
+Authentication-Results: mx.example.org; spf=pass smtp.mailfrom=hr@example.com;
+ dkim=pass header.d=example.com; dmarc=pass header.from=example.com
+Received: from mail.example.com (mail.example.com [93.184.216.34]) by
+ mx.example.org with ESMTPS id 4TfX2214; Mon, 11 Mar 2024 08:00:10 +0000
+From: HR Team <hr@example.com>
+To: student@example.org
+Subject: Benefits enrolment
+Date: Mon, 11 Mar 2024 08:00:00 +0000
+Message-ID: <e5@example.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="===============7739325385667552597=="
+
+--===============7739325385667552597==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Enrol here: https://nam12.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F=
+%2Fexample.net%2Fverify%3Fid%3D7&data=3D05%7C01%7Cstudent%40example.org%7Cabc=
+&sdata=3DZm9v&reserved=3D0
+
+--===============7739325385667552597==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+<p><a href=3D"https://nam12.safelinks.protection.outlook.com/?url=3Dhttps%3A%=
+2F%2Fexample.net%2Fverify%3Fid%3D7&data=3D05%7C01%7Cstudent%40example.org%7Ca=
+bc&sdata=3DZm9v&reserved=3D0">Open the benefits portal</a></p><p>Or visit <a =
+href=3D"https://nam12.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fe=
+vil-login.example.net%2Fo365&data=3D05%7C01%7Cstudent%40example.org%7Cabc&sda=
+ta=3DZm9v&reserved=3D0">https://www.example.com/portal</a></p>
+
+--===============7739325385667552597==--

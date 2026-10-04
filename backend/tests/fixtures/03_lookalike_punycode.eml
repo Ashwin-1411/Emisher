@@ -1,0 +1,30 @@
+Authentication-Results: mx.example.org; spf=pass
+ smtp.mailfrom=security@xn--pypal-4ve.com; dkim=none; dmarc=none
+ header.from=xn--pypal-4ve.com
+Received: from mail.xn--pypal-4ve.com (mail.xn--pypal-4ve.com [45.33.32.156])
+ by mx.example.org with ESMTPS id 4TfX450; Wed, 06 Mar 2024 12:00:10 +0000
+Return-Path: <security@xn--pypal-4ve.com>
+From: Account Security <security@xn--pypal-4ve.com>
+To: student@example.org
+Subject: Sign in to review a recent payment
+Date: Wed, 06 Mar 2024 12:00:00 +0000
+Message-ID: <b2@xn--pypal-4ve.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="===============5534644031495461438=="
+
+--===============5534644031495461438==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+Review the payment here: https://xn--pypal-4ve.com/signin
+
+--===============5534644031495461438==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+<p>Review the payment: <a href=3D"https://xn--pypal-4ve.com/signin">Sign in</=
+a></p>
+
+--===============5534644031495461438==--
