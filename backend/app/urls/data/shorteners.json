@@ -1,0 +1,4 @@
+{
+  "_comment": "Hosts of public URL shorteners. Only these are ever contacted for expansion, which keeps the server from being used to fetch arbitrary attacker-chosen addresses (SSRF).",
+  "hosts": ["bit.ly", "t.co", "tinyurl.com", "goo.gl", "ow.ly", "is.gd", "buff.ly", "rebrand.ly", "cutt.ly", "shorturl.at", "tiny.cc", "rb.gy", "lnkd.in", "s.id", "t.ly", "v.gd"]
+}

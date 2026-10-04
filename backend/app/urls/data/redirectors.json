@@ -1,0 +1,12 @@
+{
+  "_comment": "Known link wrappers. 'host' is a regex matched against the hostname, 'path' against the URL path, 'param' is the query parameter(s) holding the real destination. Unwrapping only decodes the URL; it never visits it. Proofpoint URL Defense is handled in code (it needs custom decoding).",
+  "redirectors": [
+    {"name": "Microsoft Defender SafeLinks", "host": "(^|\\.)safelinks\\.protection\\.outlook\\.com$", "path": ".*", "param": "url"},
+    {"name": "Google redirect", "host": "^(www\\.)?google\\.[a-z.]+$", "path": "^/url$", "param": ["q", "url"]},
+    {"name": "Facebook link shim", "host": "^l\\.facebook\\.com$", "path": "^/l\\.php$", "param": "u"},
+    {"name": "Slack redirect", "host": "^slack-redir\\.net$", "path": "^/link$", "param": "url"},
+    {"name": "YouTube redirect", "host": "^(www\\.)?youtube\\.com$", "path": "^/redirect$", "param": "q"},
+    {"name": "LinkedIn safety redirect", "host": "^(www\\.)?linkedin\\.com$", "path": "^/safety/go", "param": "url"},
+    {"name": "Outlook redir", "host": "^outlook\\.(office365|office)\\.com$", "path": "^/owa/redir\\.aspx$", "param": "url"}
+  ]
+}

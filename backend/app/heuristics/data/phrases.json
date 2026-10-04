@@ -1,0 +1,35 @@
+{
+  "_comment": "Phishing wording. This is a WEAK signal: legitimate bank and security emails use the same words, so these rules carry low weight and never decide a verdict on their own.",
+  "urgency": [
+    "immediately",
+    "within 24 hours",
+    "within 48 hours",
+    "urgent",
+    "act now",
+    "final notice",
+    "your account will be suspended",
+    "your account will be closed",
+    "account has been suspended",
+    "unusual activity",
+    "suspicious activity",
+    "last warning",
+    "expires today",
+    "limited time"
+  ],
+  "credentials": [
+    "verify your password",
+    "confirm your password",
+    "verify your account",
+    "confirm your account",
+    "confirm your identity",
+    "update your payment",
+    "update your billing",
+    "enter your password",
+    "login credentials",
+    "social security number",
+    "card number",
+    "sign in to review",
+    "re-enter your",
+    "validate your account"
+  ]
+}
